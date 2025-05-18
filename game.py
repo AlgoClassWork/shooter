@@ -14,6 +14,20 @@ goal = 10
 
 finish = False
 
+# Классы для настройки персонажей
+class GameSprite(sprite.Sprite):
+    def __init__(self, img, width, height, x, y, speed):
+        super().__init__()
+        self.image = transform.scale(image.load(img), (width, height))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.speed = speed
+
+    def show(self):
+        window.blit(self.image, (self.rect.x, self.rect.y))
+
+player = GameSprite(IMG_PLAYER, 100, 100, 300, 400, 5)
 # Работа с экраном
 window = display.set_mode(( WINDOW_WIDTH, WINDOW_HEIGHT ))
 display.set_caption('Шутер')
@@ -35,6 +49,7 @@ while True:
 
     # Отображение обьектов
     window.blit(background, (0, 0))
+    player.show()
     
     display.update()
     clock.tick(100)
