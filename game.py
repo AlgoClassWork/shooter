@@ -59,6 +59,10 @@ class Player(GameSprite):
         if keys[K_d] and self.rect.x < 600:  # Если нажата клавиша 'D' и не выходит за пределы
             self.rect.x += self.speed  # Двигаем вправо
 
+    def fire(self):
+        bullet = Bullet(IMG_BULLET, 20, 40, self.rect.centerx - 10, self.rect.y , 10)
+        bullets.add(bullet)
+
 class Enemy(GameSprite):
 
     def update(self):
@@ -67,8 +71,15 @@ class Enemy(GameSprite):
             self.rect.x = randint(0, WINDOW_WIDTH - 120)
             self.rect.y = 0
 
+class Bullet(GameSprite):
+
+    def update(self):
+        self.rect.y -= self.speed
+
 # Создание объекта игрока
 player = Player(IMG_PLAYER, 100, 100, 300, 400, 5)
+
+bullets = sprite.Group()
 enemys = sprite.Group()
 
 for i in range(1, 6):
@@ -95,14 +106,20 @@ while True:
     for some_event in event.get():
         if some_event.type == QUIT:  # Если событие закрытия окна
             exit()  # Закрытие программы
+        elif some_event.type == KEYDOWN:
+            if some_event.key == K_SPACE:
+                player.fire()
 
     # Отображение объектов
     window.blit(background, (0, 0))  # Отображаем фон
+
     player.show()  # Отображаем игрока
+    bullets.draw(window)
     enemys.draw(window)
 
     # Обновление позиции объектов
     player.update()  # Обновляем позицию игрока
+    bullets.update()
     enemys.update()
 
     # Обновление экрана
