@@ -64,12 +64,14 @@ class Player(GameSprite):
         bullets.add(bullet)
 
 class Enemy(GameSprite):
-
+    
     def update(self):
+        global lost
         self.rect.y += self.speed
         if self.rect.y > WINDOW_HEIGHT:
             self.rect.x = randint(0, WINDOW_WIDTH - 120)
             self.rect.y = 0
+            lost += 1
 
 class Bullet(GameSprite):
 
@@ -127,8 +129,11 @@ while True:
         enemys.add(enemy)
         score += 1
         
-    text_score = font2.render(f'Счет {score}',1,(255,255,255))
+    text_score = font2.render(f'Score {score}',1,(255,255,255))
     window.blit(text_score, (10,10))
+
+    text_lost = font2.render(f'Lost {lost}',1,(255,255,255))
+    window.blit(text_lost, (10,50))
 
     # Обновление экрана
     display.update()  # Обновляем экран
