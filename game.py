@@ -1,3 +1,4 @@
+from random import randint
 from pygame import *
 
 # Параметры игры
@@ -58,9 +59,21 @@ class Player(GameSprite):
         if keys[K_d] and self.rect.x < 600:  # Если нажата клавиша 'D' и не выходит за пределы
             self.rect.x += self.speed  # Двигаем вправо
 
+class Enemy(GameSprite):
+
+    def update(self):
+        self.rect.y += self.speed
+        if self.rect.y > WINDOW_HEIGHT:
+            self.rect.x = randint(0, WINDOW_WIDTH - 120)
+            self.rect.y = 0
 
 # Создание объекта игрока
 player = Player(IMG_PLAYER, 100, 100, 300, 400, 5)
+enemys = sprite.Group()
+
+for i in range(1, 6):
+    enemy = Enemy(IMG_ENEMY, 120, 80, randint(0, WINDOW_WIDTH - 120), 0, i)
+    enemys.add(enemy)
 
 # Настройка экрана игры
 window = display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))  # Устанавливаем размеры окна
@@ -86,9 +99,11 @@ while True:
     # Отображение объектов
     window.blit(background, (0, 0))  # Отображаем фон
     player.show()  # Отображаем игрока
+    enemys.draw(window)
 
     # Обновление позиции объектов
     player.update()  # Обновляем позицию игрока
+    enemys.update()
 
     # Обновление экрана
     display.update()  # Обновляем экран
