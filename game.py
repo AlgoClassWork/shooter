@@ -122,6 +122,14 @@ while True:
     bullets.update()
     enemys.update()
 
+    if sprite.groupcollide(bullets, enemys, True, True):
+        enemy = Enemy(IMG_ENEMY, 120, 80, randint(0, WINDOW_WIDTH - 120), 0, randint(1,5))
+        enemys.add(enemy)
+        score += 1
+        
+    text_score = font2.render(f'Счет {score}',1,(255,255,255))
+    window.blit(text_score, (10,10))
+
     # Обновление экрана
     display.update()  # Обновляем экран
     clock.tick(100)  # Ограничиваем FPS до 100
